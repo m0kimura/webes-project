@@ -1,0 +1,27 @@
+{
+  "name": "webes-project",
+  "version": "1.0.0",
+  "description": "CMS Web Server on EScript Version",
+  "main": "server.js",
+  "dependencies": {
+    "ke-cms": "^1.1.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/m0kimura/web-project.git"
+  },
+  "keywords": [
+    "cms",
+    "webserver"
+  ],
+  "author": "Michihiro Kimura <kimura@kmrweb.net> (http://www.kmrweb.net)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/m0kimura/web-project/issues"
+  },
+  "homepage": "http://www.kmrweb.net/server/cms.html"
+}
