@@ -1,8 +1,23 @@
 /* global kwBase */
 let kwMenu=class kwMenu extends kwBase {
+  /**
+   * オブジェクトコンストラクション
+   * @param  {object} op    実行時オプション
+   * @param  {object} Bs    共通パラメータ
+   * @param  {object} Save  セション越え持ち越しデータ
+   * @param  {object} Sec   セクション管理データ
+   * @param  {object} Fdata フリック制御データ
+   * @return {void}         none
+   * @method
+   */
   constructor(op, Bs, Save, Sec, Fdata) {
     super(op, Bs, Save, Sec, Fdata);
   }
+  /**
+   * 共通変数設定
+   * @param  {object} op 実行時オプション
+   * @method
+   */
   setConfig(op) {
     let me=this;
     me.Bs.locateSide=op.LocateSide||'no';
@@ -19,24 +34,43 @@ let kwMenu=class kwMenu extends kwBase {
     me.Bs.accordion.mobile=me.Bs.accordion.mobile||me.Bs.accordion.image;
     me.Bs.accordion.animate=me.Bs.accordion.animate||me.Bs.animate;
   }
+  /**
+   * イメージ、枠、設定後初期処理
+   * @return {void} none
+   * @method
+   */
   onInit() {
     this.section('init');
     this.section('padding'); this.folding('init');
     //this.section('position');
     this.locateSide('init');
   }
+  /**
+   * ウィンドウリサイズ時処理
+   * @return {void} none
+   * @method
+   */
   onResize() {
     this.section('padding'); this.folding();
   }
+  /**
+   * 画面スクロール時処理
+   * @return {[void} none
+   * @method
+   */
   onScroll(pos) {
     this.section('indicator', pos);
     this.locateSide('cont', pos);
     this.slidein('out');
   }
+  /**
+   * 表示設定終了後最終段階処理
+   * @method
+   */
   onLast() {
     this.section('position');
     this.locateSide('init'); this.slidein('init');
-    var x=location.hash; if(x){this.section('goto', x);}
+    let x=location.hash; if(x){this.section('goto', x);}
   }
   /**
    * 右サイドからのメニュースライドイン
@@ -115,6 +149,10 @@ let kwMenu=class kwMenu extends kwBase {
       }
     }
   }
+  /**
+   * ドロップダウンメニュー
+   * @method
+   */
   dropdown() {
     let me=this, op=me.Bs.dropdown, vi, o, s;
     $('.Dropdown').each(function(){
@@ -134,6 +172,11 @@ let kwMenu=class kwMenu extends kwBase {
       });
     });
   }
+  /**
+   * アコーディオンメニュー
+   * @param  {string} mode 処理タイミング init/cont
+   * @method
+   */
   accordion(mode){
     let me=this;
     ////
@@ -187,6 +230,11 @@ let kwMenu=class kwMenu extends kwBase {
       }
     });
   }
+  /**
+   * 折りたたみメニュー
+   * @param  {string} mode 処理タイミング init/cont
+   * @method
+   */
   folding(mode) {
     let me=this, f, g, op, cl, no, o;
 
@@ -253,6 +301,13 @@ let kwMenu=class kwMenu extends kwBase {
       }
     });
   }
+  /**
+   * セクションメニュー
+   * @param  {string} mode   処理モード init/position/goto/indicator
+   * @param  {integer} pos   ページ縦位置
+   * @param  {bool} direct   移動時アニメーションなし
+   * @method
+   */
   section(mode, pos, direct) {
     let me=this, id, p, t, out, k, s, i, j, f, y, nx, pr, obj;
     switch(mode){

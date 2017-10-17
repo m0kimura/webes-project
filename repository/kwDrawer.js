@@ -1,9 +1,24 @@
 'use strict';
 /* global kwBase */
 let kwDrawer=class kwDrawer extends kwBase {
+  /**
+   * コンストラクター
+   * @param  {object} op    実行時オプション
+   * @param  {object} Bs    共通変数
+   * @param  {object} Save  セション超え保存データ
+   * @param  {object} Sec   セクション管理情報
+   * @param  {object} Fdata フリック制御変数
+   * @return {void}         none
+   * @method
+   */
   constructor(op, Bs, Save, Sec, Fdata) {
     super(op, Bs, Save, Sec, Fdata);
   }
+  /**
+   * 共通変数の設定
+   * @param  {object} op オプション
+   * @method
+   */
   setConfig(op) {
     let me=this;
     me.Bs.drawer=op.Drawer||{};
@@ -15,14 +30,29 @@ let kwDrawer=class kwDrawer extends kwBase {
     me.Bs.floating.adust=me.Bs.floating.adjust||'right';
     me.Bs.floating.border=me.Bs.floating.border||me.Bs.floating.limit;
   }
+  /**
+   * イメージ設定、フレーム枠組み前の処理
+   * @return {void} none
+   * @method
+   */
   onFirst() {
     let me=this;
     me.fpMolding(); me.fpSizing(); this.floating('init');
   }
+  /**
+   * ウィンドリサイズ時の処理
+   * @return {void} none
+   * @method
+   */
   onResize() {
     let me=this;
     me.fpSizing(); this.floating('cont');
   }
+  /**
+   * 画面スクロール時の処理
+   * @return {void} none
+   * @method
+   */
   onScroll() {
     this.floating('cont');
   }

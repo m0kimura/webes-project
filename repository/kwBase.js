@@ -1,5 +1,11 @@
 'use strict';
 let kwBase=class kwBase{
+  /**
+   * コンストラクター
+   * @param  {object} obj オプション
+   * @return {void}       none
+   * @constructor
+   */
   constructor(obj) {
     let op;
     if(arguments.length==1){
@@ -22,12 +28,18 @@ let kwBase=class kwBase{
       this.setConfig(op);
     }
   }
-  setConfig() {}
-  onFirst() {}
-  onInit() {}
-  onResize() {}
-  onScroll() {}
-  onLast() {}
+  setConfig() {/* this must be overided */}
+  onFirst() {/* this must be overided */}
+  onInit() {/* this must be overided */}
+  onResize() {/* this must be overided */}
+  onScroll() {/* this must be overided */}
+  onLast() {/* this must be overided */}
+  /**
+   * オープン時実行処理
+   * @param  {object} obj 実行時オプション、サブオブジェクト群
+   * @return {void}       none
+   * @method
+   */
   begin (obj){
     let me=this, i;
     for(i in obj){if(i>0){
@@ -74,6 +86,11 @@ let kwBase=class kwBase{
     }});
     return out;
   }
+  /**
+   * 毎回実行される共通的な変数設定
+   * @return {void} none
+   * @method
+   */
   config() {
     var me=this;
     me.Bs.old=me.Bs.mode;
@@ -255,6 +272,13 @@ let kwBase=class kwBase{
     });
 
   }
+  /**
+   * 幅設定などの拡張css設定機能を提供
+   * @param  {Jquery} selector ｊQueryセレクター
+   * @param  {object} para     拡張cssパラメタと値
+   * @return {void}            none
+   * @method
+   */
   css(selector, para) {
     if(!selector){return false;}
     let e; if(typeof(selector)=='object'){e=selector;}else{e=$(selector);} if(!e){return false;}
@@ -307,6 +331,13 @@ let kwBase=class kwBase{
 
     if(para){$(selector).css(para);}
   }
+  /**
+   * 拡張css値（fullHeight,fullwidth）獲得機能
+   * @param  {string} cmd コマンド fullHeight, fullWidth
+   * @param  {object} obj jQueryオブジェクト
+   * @return {integer}    計算値
+   * @method
+   */
   get(cmd, obj) {
     switch(cmd){
     case 'fullHeight':
@@ -315,11 +346,22 @@ let kwBase=class kwBase{
       return parseInt(obj.css('margin-left'))+parseInt(obj.css('margin-right'))+obj.outerWidth();
     }
   }
-  //
+  /**
+   * cssのピクセル値から文字を省き数値化する
+   * @param  {string} x ピクセル文字列
+   * @return {integer}  計算値
+   * @method
+   */
   cut(x) {
     var p=x.search(/px/); if(p>-1){return x.substring(0, p)-0;}else{return x-0;}
   }
-  //
+  /**
+   * 拡張子の前に文字を挿入する
+   * @param  {string} txt  対象文字列
+   * @param  {string} over 挿入文字列
+   * @return {string}      編集結果
+   * @method
+   */
   insert(txt, over) {
     var sw, out, x, i; sw=0; out=''; if(!txt){return '';}
     for(i=txt.length; i>0; i--){
@@ -328,6 +370,11 @@ let kwBase=class kwBase{
     }
     return out;
   }
+  /**
+   * 使用する画像を定義
+   * @return {void} none
+   * @method
+   */
   defineImage() {
     this.pngclose='data:image/png;base64,'+ // close
        'iVBORw0KGgoAAAANSUhEUgAAABsAAAAbCAYAAACN1PRVAAAByElEQVR42t2W2YrCQBBF/RoN6JNxR'+

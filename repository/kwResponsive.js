@@ -1,9 +1,24 @@
 'use strict';
 /* global kwBase */
 let kwResponsive=class kwResponsive extends kwBase {
+  /**
+   * オブジェクトコンストラクション
+   * @param  {object} op    実行時オプション
+   * @param  {object} Bs    共通パラメータ
+   * @param  {object} Save  セション越え持ち越しデータ
+   * @param  {object} Sec   セクション管理データ
+   * @param  {object} Fdata フリック制御データ
+   * @return {void}         none
+   * @method
+   */
   constructor() {
     super(arguments);
   }
+  /**
+   * 共通変数設定
+   * @param  {object} op 実行時オプション
+   * @method
+   */
   setConfig(op) {
     let me=this;
     me.Bs=me.Bs||{};

@@ -1,9 +1,24 @@
 'use strict';
 /* global kwBase _gaq */
 let kwParts=class kwParts extends kwBase {
+  /**
+   * オブジェクトコンストラクション
+   * @param  {object} op    実行時オプション
+   * @param  {object} Bs    共通パラメータ
+   * @param  {object} Save  セション越え持ち越しデータ
+   * @param  {object} Sec   セクション管理データ
+   * @param  {object} Fdata フリック制御データ
+   * @return {void}         none
+   * @method
+   */
   constructor(op, Bs, Sec, Save, Fdata) {
     super(op, Bs, Sec, Save, Fdata);
   }
+  /**
+   * 共通変数設定
+   * @param  {object} op 実行時オプション
+   * @method
+   */
   setConfig(op) {
     let me=this;
     me.Bs.cell=op.Cell||{};
@@ -32,21 +47,45 @@ let kwParts=class kwParts extends kwBase {
     me.Bs.logo.max=me.Bs.logo.max||120;
     me.Bs.logo.min=me.Bs.logo.min||me.Bs.logo.max;
   }
+  /**
+   * イメージ設定、フレーム枠組み前の処理
+   * @return {void} none
+   * @method
+   */
   onFirst() {
     this.ajaxSource(); this.listing();
   }
+  /**
+   * イメージ、枠、設定後初期処理
+   * @return {void} none
+   * @method
+   */
   onInit() {
     this.sns(); this.depend(); this.hide(); this.cell();
     this.logo('init'); this.swing();
   }
+  /**
+   * 表示設定終了後最終段階処理
+   * @method
+   */
   onLast() {
     this.photoUp(); this.tipup(); this.rollover();
   }
+  /**
+   * ウィンドウリサイズ時処理
+   * @return {void} none
+   * @method
+   */
   onResize(change) {
     this.depend(); this.hide(); this.cell(); this.listing();
     this.logo('cont', $(window).scrollTop());
     if(change){this.swing();}
   }
+  /**
+   * 画面スクロール時処理
+   * @return {[void} none
+   * @method
+   */
   onScroll(pos) {
     this.logo('cont', pos);
   }
@@ -82,6 +121,12 @@ let kwParts=class kwParts extends kwBase {
       $('.Mobilei').each(function(){$(this).css({display: 'none'});});
     }
   }
+  /**
+   * ロゴ表示オペレーション
+   * @param  {string} mode 処理タイミング init/cont
+   * @param  {[type]} pos  [description]
+   * @method
+   */
   logo(mode, pos) {
     var me=this; var tp, lf, wi;
     if(!me.Bs.logo.image){return;}
@@ -140,6 +185,10 @@ let kwParts=class kwParts extends kwBase {
       return;
     }
   }
+  /**
+   * セルの大きさを合わせる
+   * @method
+   */
   cell() {
     let me=this, w, m, n, h, max, min, s, i, l, r, p;
 
@@ -295,6 +344,10 @@ let kwParts=class kwParts extends kwBase {
       $('#Tipup').css({top: y+'px', left: x+'px'});
     });
   }
+  /**
+   * GoogleAnalytics 処理
+   * @method
+   */
   analytics() {
     var me=this; var a;
     if(me.Bs.analytics.account){
@@ -319,6 +372,10 @@ let kwParts=class kwParts extends kwBase {
       });
     }
   }
+  /**
+   * twitterサブウィンドウ
+   * @method
+   */
   twitter() {
     window.twttr=(function(d, s, id){
       let js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};
@@ -328,6 +385,10 @@ let kwParts=class kwParts extends kwBase {
       t._e=[];t.ready=function(f){t._e.push(f);};return t;
     }(document,'script','twitter-wjs'));
   }
+  /**
+   * facebooサブウィンドウ
+   * @method
+   */
   facebook() {
     window.facebk=(function(d, s, id){
       let js, fjs = d.getElementsByTagName(s)[0];
@@ -337,6 +398,10 @@ let kwParts=class kwParts extends kwBase {
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
   }
+  /**
+   * SNS関連処理
+   * @method
+   */
   sns() {
     let me=this;
 

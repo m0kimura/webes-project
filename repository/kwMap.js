@@ -1,9 +1,24 @@
 'use strict';
 /* global kwBase google */
 let kwMap=class kwMap extends kwBase {
+  /**
+   * オブジェクトコンストラクション
+   * @param  {object} op    実行時オプション
+   * @param  {object} Bs    共通パラメータ
+   * @param  {object} Save  セション越え持ち越しデータ
+   * @param  {object} Sec   セクション管理データ
+   * @param  {object} Fdata フリック制御データ
+   * @return {void}         none
+   * @method
+   */
   constructor(op, Bs, Save, Sec, Fdata) {
     super(op, Bs, Save, Sec, Fdata);
   }
+  /**
+   * 共通変数設定
+   * @param  {object} op 実行時オプション
+   * @method
+   */
   setConfig(op) {
     let me=this;
     console.log('map.js');
@@ -14,6 +29,11 @@ let kwMap=class kwMap extends kwBase {
     me.Bs.map.height=me.Bs.map.height||500;
     me.Bs.map.width=me.Bs.map.width||500;
   }
+  /**
+   * イメージ、枠、設定後初期処理
+   * @return {void} none
+   * @method
+   */
   onInit() { // molding
     let me=this;
     if(!me.Bs.map.key){return;}
@@ -40,6 +60,11 @@ let kwMap=class kwMap extends kwBase {
       border: 'none','display': 'none', position: 'absolute', 'z-index': 901
     });
   }
+  /**
+   * ウィンドウリサイズ時処理
+   * @return {void} none
+   * @method
+   */
   onResize() {
     let me=this, w, h, obj;
     $('.Map').each(function(){
@@ -56,6 +81,11 @@ let kwMap=class kwMap extends kwBase {
       }else{me.cancel(obj);}
     });
   }
+  /**
+   * 画面スクロール時処理
+   * @return {[void} none
+   * @method
+   */
   onScroll() {
     var me=this, tp, ra;
     if(me.Bs.mode=='mobile'){
@@ -68,6 +98,13 @@ let kwMap=class kwMap extends kwBase {
       $('#Pbody').css({top: tp+'px'}); $('#Pclose').css({top: tp+'px'});
     }
   }
+  /**
+   * 地図の表示エリアを設定
+   * @param  {object} obj jquery表示枠
+   * @param  {integer} ix 管理番号
+   * @return {void}       none
+   * @method
+   */
   blockMap(obj, ix) {
     let me=this, ti, w, h, o;
     w=obj.attr('wi')||me.Bs.map.width; h=obj.attr('hi')||me.Bs.map.height;
@@ -94,6 +131,11 @@ let kwMap=class kwMap extends kwBase {
       me.Save.map[ix].obj.setCenter(ce);
     });
   }
+  /**
+   * ロード時処理（設置またはイベント監視）
+   * @return {void} none
+   * @method
+   */
   onload() {
     let me=this, ix, obj;
     me.Save.map=[];
@@ -104,6 +146,13 @@ let kwMap=class kwMap extends kwBase {
       ix++;
     });
   }
+  /**
+   * イベント管理
+   * @param  {object}  obj 監視対象オブジェクト
+   * @param  {integer} ix  管理番号
+   * @return {bool}        通常反応の禁止
+   * @method
+   */
   monitoring(obj, ix) {
     let me=this;
     me.Save.map[ix]={};
@@ -117,6 +166,13 @@ let kwMap=class kwMap extends kwBase {
 
     $('#Pclose').on('click', function(){me.dimout(ix);});
   }
+  /**
+   * 地図のポップアップ
+   * @param  {object} obj 表示対象jQueryエリア
+   * @param  {integer} ix 管理番号
+   * @return {void}       none
+   * @method
+   */
   popup(obj, ix) {
     let me=this;
     let lat=obj.attr('lat')-0||35; var lon=obj.attr('lon')-0||135; var ti=obj.attr('title')||'';
@@ -147,6 +203,13 @@ let kwMap=class kwMap extends kwBase {
     me.Save.map[ix].toggle=true;
     $('#Pbody').animate({opacity: 1.0}, me.Bs.map.animate);
   }
+  /**
+   * 地図のエレベート
+   * @param  {object} obj  表示エリアjquerｙオブジェクト
+   * @param  {integer} ix  管理番号
+   * @return {void}        none
+   * @method
+   */
   elevatefunction(obj, ix){
     let me=this;
     let lat=obj.attr('lat')-0||35; var lon=obj.attr('lon')-0||135; var ti=obj.attr('title')||'';
@@ -173,6 +236,11 @@ let kwMap=class kwMap extends kwBase {
     $('#Pclose').animate({top: tp+'px'}, me.Bs.map.animate);
     me.Save.map[ix].toggle=true;
   }
+  /**
+   * 地図の消失
+   * @param  {integer} ix 管理番号
+   * @method
+   */
   dimout(ix) {
     let me=this;
     if(me.Bs.mode=='mobile'){
@@ -188,6 +256,10 @@ let kwMap=class kwMap extends kwBase {
     }
     me.Save.map[ix].toggle=false;
   }
+  /**
+   * 地図の消失
+   * @method
+   */
   cancel() {
     let me=this;
     if(me.Bs.mode!='mobile'){
