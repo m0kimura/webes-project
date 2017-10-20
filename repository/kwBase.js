@@ -92,7 +92,8 @@ let kwBase=class kwBase{
    * @method
    */
   config() {
-    var me=this;
+    let me=this;
+    //
     me.Bs.old=me.Bs.mode;
     me.Bs.wwi=$(window).width();
     me.Bs.whi=window.innerHeight ? window.innerHeight: $(window).height();
@@ -172,7 +173,6 @@ let kwBase=class kwBase{
    */
   flick(data, indicator, direct) {
     let me=this;
-
     //                                          // 構造データ
     data.mode=data.mode||'page';                // 操作モード(page, hide, move)
     data.area=data.area;                        // area: 移動オブジェクト
@@ -207,21 +207,29 @@ let kwBase=class kwBase{
 
       'touchstart mousedown': function(e){
         if(me.Bs.mode!='mobile'){return;}
-
         data.flg=true;
-        data.wi=data.area.outerWidth();
-        data.hi=data.area.outerHeight();
+        data.wi=data.object.outerWidth();
+        data.hi=data.object.outerHeight();
         data.stx=(isTouch ? event.changedTouches[0].pageX : e.pageX);
         data.sty=(isTouch ? event.changedTouches[0].pageY : e.pageY);
         data.inx=parseInt($(data.object).css('margin-left'));
         data.iny=parseInt($(data.object).css('margin-top'));
-        var a=$(data.object).attr('min'); if(a){data.maxtop=(a-0)*-1;}else{data.maxtop=0;}
-        var b=$(data.object).attr('max'); if(b){data.minbot=(b-0)*-1;}else{data.minbot=0;}
+        if(data.direct){
+          if(data.direct=='V'){
+            data.maxtop=me.Bs.whi-data.hi; data.minbot=0;
+            data.maxright=0; data.minleft=0;
+          }else{
+            data.maxtop=0; data.minbot=0;
+            data.maxright=me.Bs.wwi-data.wi; data.minleft=0;
+          }
+        }else{
+          var a=$(data.object).attr('min'); if(a){data.maxtop=(a-0)*-1;}else{data.maxtop=0;}
+          var b=$(data.object).attr('max'); if(b){data.minbot=(b-0)*-1;}else{data.minbot=0;}
+        }
       },
 
       'touchmove mousemove': function(e){if(data.flg){
         if(me.Bs.mode!='mobile'){return;}
-
         e.preventDefault();
         let nx=(isTouch ? event.changedTouches[0].pageX : e.pageX);
         let ny=(isTouch ? event.changedTouches[0].pageY : e.pageY);
@@ -230,17 +238,18 @@ let kwBase=class kwBase{
         dy=ny-data.sty;
         if(Math.abs(nx-data.stx)>Math.abs(dy)){
           if(data.mode=='move'){
-            tx=data.inx+dx;
-            if(ty>data.maxtop){ty=data.maxtop;} if(ty<data.minbot){ty=data.minbot;}
-            data.object.css({'margin-left': tx+'px'});
+            if(data.direct!='V'){
+              tx=data.inx+dx;
+              if(tx<data.maxright){tx=data.maxright;} if(tx>data.minleft){tx=data.minleft;}
+              data.object.css({'margin-left': tx+'px'});
+            }
           }else{
             if(dx<0){data.object.css({'margin-left': dx+'px'});}
           }
         }else{
           ty=data.iny+dy;
-          if(ty>data.maxtop){ty=data.maxtop;} if(ty<data.minbot){ty=data.minbot;}
+          if(ty<data.maxtop){ty=data.maxtop;} if(ty>data.minbot){ty=data.minbot;}
           $(data.object).css({'margin-top': ty+'px'});
-
         }
       }},
 
@@ -248,7 +257,6 @@ let kwBase=class kwBase{
         if(me.Bs.mode!='mobile'){return;}
 
         data.flg=false;
-
         if(data.mode!='move'){
           data.ix=data.area.attr('ix')-0;
           let n=(isTouch ? event.changedTouches[0].pageX : e.pageX);
@@ -261,7 +269,7 @@ let kwBase=class kwBase{
             data.ix--; if(data.ix<1){data.ix=1;}
             if(data.modal){me.modal('clear');}
           }
-          let d=data.wi*(data.ix-1)*-1; if(data.mode=='hider'){d=0;}
+          let d=data.wi*(data.ix-1)*-1; if(data.mode=='hide'){d=0;}
           data.object.stop();
           data.object.animate({'margin-left': d}, data.animate, function(){
             indicator(data);

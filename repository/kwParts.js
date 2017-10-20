@@ -62,7 +62,7 @@ let kwParts=class kwParts extends kwBase {
    */
   onInit() {
     this.sns(); this.depend(); this.hide(); this.cell();
-    this.logo('init'); this.swing();
+    this.logo('init'); this.swing('init');
   }
   /**
    * 表示設定終了後最終段階処理
@@ -76,10 +76,10 @@ let kwParts=class kwParts extends kwBase {
    * @return {void} none
    * @method
    */
-  onResize(change) {
+  onResize() {
     this.depend(); this.hide(); this.cell(); this.listing();
     this.logo('cont', $(window).scrollTop());
-    if(change){this.swing();}
+    this.swing('cont');
   }
   /**
    * 画面スクロール時処理
@@ -233,9 +233,11 @@ let kwParts=class kwParts extends kwBase {
       a=me.Bs.wwi; if(a<w){w=a-10;}
       x=Math.floor(a/(w+10))+1;
       w=Math.floor(a/x);
-      $(this).find('dt').each(function(){$(this).css({width: a+'px'});});
+      $(this).find('dt').each(function(){
+        me.css($(this), {outerWidth: a+'px'});
+      });
       $(this).find('dd').each(function(){
-        $(this).css({width: a+'px'});
+        me.css($(this), {outerWidth: a+'px'});
         $(this).find('div').each(function(){
           $(this).css({width: w+'px', overflow: 'hidden', float: 'left'});
         });
@@ -447,7 +449,7 @@ let kwParts=class kwParts extends kwBase {
    * @return {Void} none
    * @method
    */
-  swing() {
+  swing(mode) {
     let me=this;
     //
     $('.Swing').each(function(){
@@ -469,22 +471,25 @@ let kwParts=class kwParts extends kwBase {
       }
     });
 
-    $('.Swing dt').on('click', function(){
-      let op, cl, o, p, e;
-      p=$(this).parents().eq(0);
-      e=p.attr('event');
-      o=p.find('dd').css('display');
-      op=p.attr('open')||me.Bs.image.open;
-      cl=p.attr('close')||me.Bs.image.close;
-      if(o=='block'){
-        p.find('dt').css({'background': 'url('+cl+') no-repeat bottom left'});
-        p.find('dd').css({display: 'none'});
-      }else{
-        p.find('dt').css({'background': 'url('+op+') no-repeat bottom left'});
-        p.find('dd').css({display: 'block'});
-      }
-      if(e){$(window).trigger(e);}
-    });
+    if(mode=='init'){
+      $('.Swing dt').on('click', function(){
+        let op, cl, p, e, s;
+        p=$(this).parents().eq(0);
+        e=p.attr('event');
+        op=p.attr('open')||me.Bs.image.open;
+        cl=p.attr('close')||me.Bs.image.close;
+        s=p.find('dd').css('display');
+        if(s=='block'){
+          p.find('dt').css({'background': 'url('+cl+') no-repeat bottom left'});
+          p.find('dd').css({display: 'none'});
+        }else{
+          p.find('dt').css({'background': 'url('+op+') no-repeat bottom left'});
+          p.find('dd').css({display: 'block'});
+        }
+        if(e){$(window).trigger(e);}
+        return false;
+      });
+    }
   }
 };
 console.log(typeof(kwParts));

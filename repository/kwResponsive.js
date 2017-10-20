@@ -209,12 +209,41 @@ let kwResponsive=class kwResponsive extends kwBase {
     //
     me.Bs.shrinkHeight=0; me.Save['fixedTop']=0; top=0; fixed=0;
     $('body').children().each(function(){
-      let h;
+      let h, r, m, z=1, o='visible', s, w, ow, oh;
       tag=$(this)[0].localName;
       me.Save.pos[tag]=top;
       $(this).css({height: 'auto'});
       if($(this).css('display')=='none'){hi=0;}else{hi=$(this).outerHeight();}
       me.Save.hi[tag]=hi;
+      //
+      switch($(this).attr('pane')){
+      case 'full':
+        hi=$(window).height(); o='hidden';
+        o='hidden';
+        break;
+      case 'smooze':
+        h=$(this).attr('initH'); if(h){h=h-0;}else{h=400;}
+        hi=Math.floor(h*me.Bs.wwi/me.Bs.maxPc);
+        o='hidden';
+        break;
+      case 'ratio':
+        r=$(this).attr('rate'); if(r){r=r-0;}else{r=50;}
+        m=$(this).attr('max'); if(m){m=m-0;}else{m=0;}
+        hi=Math.floor(me.Bs.whi*r/100);
+        if(m){if(hi>m){hi=m;}}
+        o='hidden';
+        break;
+      case 'target':
+        s=$(this).attr('size'); if(s){s=s-0;}else{s=me.Bs.widthMobile;}
+        r=(me.Bs.wwi-me.Bs.widthMobile)/(me.Bs.maxPc-me.Bs.widthMobile);
+        ow=$(this).attr('originWidth'); if(ow){ow=ow-0;}else{ow=me.Bs.maxPc;}
+        oh=$(this).attr('originHeight'); if(oh){oh=oh-0;}else{oh=me.Bs.widthMobile;}
+        w=s+(ow-s)*r;
+        hi=Math.floor(oh*w/ow);
+        o='hidden';
+        break;
+      }
+      //
       switch($(this).attr('pos')){
       case 'Fix':
         me.css($(this), {
@@ -228,21 +257,21 @@ let kwResponsive=class kwResponsive extends kwBase {
         h=$(this).outerHeight();
         me.css($(this), {
           'z-index': 500, position: 'fixed', top: top+'px', left: lf+'px',
-          width: wi+'px', outerHeight: hi+'px'
+          width: wi+'px', outerHeight: hi+'px', overflow: o
         });
         top=top+hi; me.Save['fixedTop']+=h; fixed=fixed+hi;
         break;
       case 'Behind':
         me.css($(this), {
           'z-index': 0, position: 'fixed', top: top+'px', left: lf+'px',
-          width: wi+'px', outerHeight: hi+'px'
+          width: wi+'px', outerHeight: hi+'px', overflow: o
         });
         top=top+hi; me.Bs.shrinkHeight+=hi;
         break;
       case 'Parallax':
         me.css($(this), {
           'z-index': 0, position: 'absolute', top: top+'px', left: lf+'px',
-          width: wi+'px', outerHeight: hi+'px'
+          width: wi+'px', outerHeight: hi+'px', overflow: o
         });
         $(this).attr('save', top); top=top+hi; me.Bs.shrinkHeight+=hi;
         v=$(this).attr('speed')||me.Bs.parallax; $(this).attr('speed', v-0);
@@ -250,26 +279,17 @@ let kwResponsive=class kwResponsive extends kwBase {
       case 'Remain':
         me.css($(this), {
           'z-index': 500, position: 'absolute', top: top+'px', left: lf+'px',
-          width: wi+'px', outerHeight: hi+'px'
+          width: wi+'px', outerHeight: hi+'px', overflow: o
         });
         $(this).attr('save', top); top=top+hi;
         $(this).attr('fixed', fixed); fixed=fixed+hi; me.Save.fixedTop+=hi;
-        break;
-      case 'Full':
-        hi=$(window).height();
-        me.css($(this), {
-          position: 'absolute', top: top+'px', left: lf+'px',
-          width: wi+'px', outerHeight: hi+'px'
-        });
-        $(this).attr('save', top);
-        top=top+hi;
         break;
       default:
         if(tag=='main'){hi=main;}
         if(area && tag!='a'){
           me.css($(this), {
-            'z-index': 1, position: 'absolute', top: top+'px', left: lf+'px',
-            width: wi+'px', outerHeight: hi+'px'
+            'z-index': z, position: 'absolute', top: top+'px', left: lf+'px',
+            width: wi+'px', outerHeight: hi+'px', overflow: o
           });
           $(this).attr('save', top); $(this).attr('hi', hi);
           top=top+hi;
@@ -333,8 +353,6 @@ let kwResponsive=class kwResponsive extends kwBase {
         $('footer').animate({'margin-left': 0}, me.Bs.footer.animate);
         $('footer').attr('ix', 1);
       });}
-      me.Fdata.footer={area: $('footer'), mode: 'hide', modal: true};
-      me.flick(me.Fdata.footer);
       if(me.Bs.footer.remain){
         $('#FTlabel').on('click', function(){
           let t=$('footer').attr('savetop')-0;
@@ -352,9 +370,14 @@ let kwResponsive=class kwResponsive extends kwBase {
         });
         $(window).on('footerOpen', function(){
           let t=$('footer').position().top-0; $('footer').attr('savetop', t);
+          let b=$('footer').css('padding-bottom');
           $('footer').css({height: 'auto'});
           t=me.Bs.whi-$('footer').outerHeight();
-          $('footer').stop(); $('footer').animate({top: t+'px'}, me.Bs.footer.animate);
+          $('footer').stop();
+          $('footer').css('padding-bottom', '500px');
+          $('footer').animate({top: t+'px'}, me.Bs.footer.animate, function(){
+            $('footer').css('padding-bottom', b);
+          });
         });
       }
 
@@ -455,8 +478,14 @@ let kwResponsive=class kwResponsive extends kwBase {
       }
     });
     $('.PhotoM, .photoM').each(function(){
-      if(me.Bs.mode=='mobile'){w='100%';}else{w=me.Bs.image.photoM;}
-      $(this).css({width: w});
+      if(me.Bs.mode=='mobile'){
+        w=$(this).parent().css('width');
+        w=Math.floor(me.cut(w)*0.99);
+        me.css($(this), {outerWidth: w+'px'});
+      }else{
+        w=me.Bs.image.photoM;
+        $(this).css({width: w});
+      }
     });
     $('.PhotoU, .photoU').each(function(){
       if(me.Bs.mode=='mobile'){w='100%';}else{w=me.Bs.image.photoM;}

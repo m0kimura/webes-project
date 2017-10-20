@@ -35,9 +35,13 @@ let kwDrawer=class kwDrawer extends kwBase {
    * @return {void} none
    * @method
    */
-  onFirst() {
+  onInit() {
     let me=this;
-    me.fpMolding(); me.fpSizing(); this.floating('init');
+    me.layout('mold'); this.floating('init');
+  }
+  onLast() {
+    let me=this;
+    me.layout('sizing');
   }
   /**
    * ウィンドリサイズ時の処理
@@ -46,7 +50,7 @@ let kwDrawer=class kwDrawer extends kwBase {
    */
   onResize() {
     let me=this;
-    me.fpSizing(); this.floating('cont');
+    me.layout('sizing'); this.floating('cont');
   }
   /**
    * 画面スクロール時の処理
@@ -61,43 +65,82 @@ let kwDrawer=class kwDrawer extends kwBase {
    * @return {Void} none
    * @method
    */
-  fpMolding() {
-    let me=this, minW, minX, hi;
-    $('.FullPhoto').each(function(){
-      minW=$(this).attr('minwidth')||me.Bs.drawer.FullPhotoMinSize||800; minW=minW-0;
-      minX=$(this).attr('minpos')||400; minX=minX-0;
-      hi=window.innerHeight||$(window).height();
-      $(this).css({
-        display: 'block', overflow: 'hidden',
-        width: $(window).width()+'px', height: hi+'px'
+  layout(mode) {
+    let me=this;
+    switch(mode){
+    case 'mold':
+      $('.Layout').each(function(){
+        let ow=$(this).outerWidth(); $(this).attr('originWidth', ow);
+        let oh=$(this).outerHeight(); $(this).attr('originHeight', oh);
       });
-      $(this).attr('minwidth', minW);
-      $(this).attr('minpos', minX);
-    });
-  }
-  /**
-   * フルページ写真のサイジング
-   * @return {Void none
-   * @method
-   */
-  fpSizing() {
-    let me=this, max, min, minW, minX, nowX, top, left, wi, hi;
-    nowX=me.Bs.wwi; max=me.Bs.maxPc; min= me.Bs.minMb||300;
-    $('.FullPhoto').each(function(){
-      minW=$(this).attr('minwidth')-0;
-      minX=$(this).attr('minpos')-0;
-      hi=$(window).height();
-      //$(this).css({display: 'block', overflow: 'hidden', width: wi+'px', height: hi+'px'});
-      wi=Math.floor((minW)+(max-minW)*(nowX-min)/(max-min));
-      left=Math.floor((min/2-minX)+(minX-min/2)*(nowX-min)/(max-min));
-      top=Math.floor(hi/2-wi/2);
-      $(this).find('img').each(function(){
+      break;
+    case 'sizing':
+      $('.Layout').each(function(){
+        let wk={};
+        wk.ow=$(this).attr('originWidth');
+        wk.oh=$(this).attr('originHeight');
+        wk.pw=$(this).parent().outerWidth();
+        wk.ph=$(this).parent().outerHeight();
+        wk.mode=$(this).attr('mode');
+        switch(wk.mode){
+        case 'slow':
+          wk.r=$(this).attr('rate'); if(wk.r){wk.r=(wk.r-0)/100;}else{wk.r=0.5;}
+          wk.w=Math.floor(me.Bs.wwi+(wk.ow-me.Bs.wwi)*wk.r);
+          wk.h=Math.floor(wk.oh*wk.w/wk.ow);
+          wk.l=Math.floor(wk.pw/2-wk.w/2);
+          wk.t=Math.floor(wk.ph/2-wk.h/2);
+          break;
+        case 'none':
+          wk.w=wk.ow;
+          wk.h=wk.oh;
+          wk.l=Math.floor(wk.pw/2-wk.w/2);
+          wk.t=Math.floor(wk.ph/2-wk.h/2);
+          break;
+        case 'move':
+          wk.x=$(this).attr('x'); if(wk.x){wk.x=wk.x-0;}else{wk.x=0;}
+          wk.y=$(this).attr('y'); if(wk.y){wk.y=wk.y-0;}else{wk.y=0;}
+          wk.w=wk.ow;
+          wk.h=wk.oh;
+          wk.r=(me.Bs.maxPc-me.Bs.wwi)/(me.Bs.maxPc-me.Bs.widthMobile);
+          wk.l=Math.floor(wk.pw/2-wk.w/2+wk.x*wk.r);
+          wk.t=Math.floor(wk.ph/2-wk.h/2+wk.y*wk.r);
+          break;
+        case 'target':
+          wk.s=$(this).attr('size'); if(wk.s){wk.s=wk.s-0;}else{wk.s=me.Bs.widthMobile;}
+          wk.x=$(this).attr('x'); if(wk.x){wk.x=wk.x-0;}else{wk.x=0;}
+          wk.y=$(this).attr('y'); if(wk.y){wk.y=wk.y-0;}else{wk.y=0;}
+          wk.r=(me.Bs.wwi-me.Bs.widthMobile)/(me.Bs.maxPc-me.Bs.widthMobile);
+          wk.w=wk.s+(wk.ow-wk.s)*wk.r;
+          wk.h=Math.floor(wk.oh*wk.w/wk.ow);
+          wk.l=Math.floor(wk.pw/2-wk.w/2+wk.x*wk.r);
+          wk.t=Math.floor(wk.ph/2-wk.h/2+wk.y*wk.r);
+          break;
+        default:
+          wk.min=$(this).attr('min');
+          wk.r=me.Bs.wwi/me.Bs.maxPc;
+          wk.w=Math.floor(wk.ow*wk.r);
+          if(wk.min){if(wk.w<wk.min){
+            wk.w=wk.min-0;
+            wk.r=wk.min/wk.ow;
+          }}
+          wk.h=Math.floor(wk.oh*wk.r);
+          wk.dx=$(this).attr('diffX'); if(wk.dx){wk.dx=wk.dx-0;}else{wk.dx=0;}
+          wk.dy=$(this).attr('diffy'); if(wk.dy){wk.dy=wk.dy-0;}else{wk.dy=0;}
+          wk.ex=Math.floor((me.Bs.maxPc-me.Bs.wwi)*wk.dx/(me.Bs.maxPc-me.Bs.widthMobile));
+          wk.ey=Math.floor((me.Bs.maxPc-me.Bs.wwi)*wk.dy/(me.Bs.maxPc-me.Bs.widthMobile));
+          wk.l=Math.floor(wk.pw/2-wk.w/2)-wk.ex;
+          wk.t=Math.floor(wk.ph/2-wk.h/2)-wk.ey;
+        }
+        //console.log('#93', wk);
         $(this).css({
-          position: 'absolute', top: top+'px', left: left+'px', width: wi+'px',
-          'z-index': 0
+          width: wk.w+'px', top: wk.t+'px', left: wk.l+'px',
+          position: 'absolute', 'z-index': -1
         });
       });
-    });
+      break;
+    default:
+      me.infoLog('layout do nothing mode='+mode);
+    }
   }
   /**
    * Floatingクラス全画面フォトでのキャプションをフローティング
@@ -112,14 +155,14 @@ let kwDrawer=class kwDrawer extends kwBase {
       me.Bs.floating.el=[];
       $('.Floating').each(function(){
         $(this).css({position: 'absolute', top: 0, left: 0, height: 'auto'});
-        x=$(this).attr('rate'); a=x.split(':');
+        x=$(this).attr('rate'); if(x){a=x.split(':')-0;}else{a=[];}
         me.Bs.floating.el[i]={};
-        me.Bs.floating.el[i].min=me.Bs.floating.min||(a[0]-0);
-        me.Bs.floating.el[i].limit=me.Bs.floating.limit||(a[1]-0);
-        me.Bs.floating.el[i].max=me.Bs.floating.max||(a[2]-0);
-        x=$(this).attr('positioning'); a=x.split(':');
-        me.Bs.floating.el[i].adust=me.Bs.floating.adjust||a[0];
-        me.Bs.floating.el[i].border=me.Bs.floating.border||(a[1]-0);
+        me.Bs.floating.el[i].min=a[0]||me.Bs.floating.min;
+        me.Bs.floating.el[i].limit=a[1]||me.Bs.floating.limit;
+        me.Bs.floating.el[i].max=a[2]||me.Bs.floating.max;
+        x=$(this).attr('positioning'); if(x){a=x.split(':')-0;}else{a=[];}
+        me.Bs.floating.el[i].adust=a[0]||me.Bs.floating.adjust;
+        me.Bs.floating.el[i].border=a[1]||me.Bs.floating.border;
         $(this).attr('ix', i);
         i++;
       });
@@ -142,7 +185,6 @@ let kwDrawer=class kwDrawer extends kwBase {
         l=Math.floor((me.Bs.wwi-w)/2); t=me.Bs.whi-h-tp;
       }
       $(this).css({width: w+'px', top: t+'px', left: l+'px'});
-      console.log('#1851', me.Bs.wwi, w, l, me.Bs.whi, t);
     });
   }
 };
