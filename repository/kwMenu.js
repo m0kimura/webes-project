@@ -107,7 +107,6 @@ let kwMenu=class kwMenu extends kwBase {
           });
           l=$(window).width(); t=$(window).scrollTop(); w=Math.floor(l*0.7);
           h=$('#East').outerHeight(); if(h<me.Bs.whi){h=me.Bs.whi;}
-          console.log('#111', h);
           $('#East').css({
             display: 'block', position: 'absolute', top: t+'px', left: l+'px',
             width: w+'px', height: h+'px'
@@ -375,7 +374,6 @@ let kwMenu=class kwMenu extends kwBase {
     // 監視
     case 'monitor':
       $(document).on('click', '.Posbar a', function(){
-        console.log('#382');
         var x=$(this).attr('href'); if(x){me.section('goto', x);}
         return false;
       });

@@ -192,8 +192,22 @@ let kwResponsive=class kwResponsive extends kwBase {
    * @return {void} none
    * @method
    */
-  body() {
+  body(mode) {
     let me=this, hi, wi, lf=0, v, top, fixed, tag, main, area=true;
+    if(mode=='init'){
+      $('body').children().each(function(){
+        if($(this).attr('pane')){
+          let h, w;
+          $(this).find('img').each(function(){
+            h=$(this).outerHeight();
+            w=$(this).outerWidth();
+          });
+          $(this).attr('originHeight', h);
+          $(this).attr('originWidth', w);
+        }
+      });
+    }
+    //
     if(me.Bs.mode=='wide' && me.Bs.section.wide!='yes'){
       lf=Math.floor(($(window).width()-me.Bs.maxPc)/2);
       wi=me.Bs.maxPc;
@@ -222,7 +236,7 @@ let kwResponsive=class kwResponsive extends kwBase {
         o='hidden';
         break;
       case 'smooze':
-        h=$(this).attr('initH'); if(h){h=h-0;}else{h=400;}
+        h=$(this).attr('originHeight');
         hi=Math.floor(h*me.Bs.wwi/me.Bs.maxPc);
         o='hidden';
         break;
