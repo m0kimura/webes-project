@@ -41,7 +41,7 @@ let kwDrawer=class kwDrawer extends kwBase {
   }
   onLast() {
     let me=this;
-    me.layout('sizing');
+    this.floating('last'); me.layout('sizing');
   }
   /**
    * ウィンドリサイズ時の処理
@@ -112,8 +112,9 @@ let kwDrawer=class kwDrawer extends kwBase {
           wk.r=(me.Bs.wwi-me.Bs.widthMobile)/(me.Bs.maxPc-me.Bs.widthMobile);
           wk.w=wk.s+(wk.ow-wk.s)*wk.r;
           wk.h=Math.floor(wk.oh*wk.w/wk.ow);
-          wk.l=Math.floor(wk.pw/2-wk.w/2+wk.x*wk.r);
-          wk.t=Math.floor(wk.ph/2-wk.h/2+wk.y*wk.r);
+          wk.l=Math.floor(wk.pw/2-wk.w/2+wk.x*(1-wk.r));
+          wk.t=Math.floor(wk.ph/2-wk.h/2+wk.y*(1-wk.r));
+          console.log('#117', wk.r);
           break;
         default:
           wk.min=$(this).attr('min');
@@ -149,42 +150,66 @@ let kwDrawer=class kwDrawer extends kwBase {
    * @method
    */
   floating(mode) {
-    let me=this, a, x, i;
-    if(mode=='init'){
-      i=0;
+    let me=this, a, x, max, min, adjust, border;
+    switch(mode){
+    case 'init':
       me.Bs.floating.el=[];
       $('.Floating').each(function(){
         $(this).css({position: 'absolute', top: 0, left: 0, height: 'auto'});
-        x=$(this).attr('rate'); if(x){a=x.split(':')-0;}else{a=[];}
-        me.Bs.floating.el[i]={};
-        me.Bs.floating.el[i].min=a[0]||me.Bs.floating.min;
-        me.Bs.floating.el[i].limit=a[1]||me.Bs.floating.limit;
-        me.Bs.floating.el[i].max=a[2]||me.Bs.floating.max;
+        x=$(this).attr('range'); if(x){a=x.split(':');}else{a=[];}
+        max=a[1]-0; console.log('#161', a[0]);
+        min=a[0]-0; console.log('#162', min);
         x=$(this).attr('positioning'); if(x){a=x.split(':')-0;}else{a=[];}
-        me.Bs.floating.el[i].adust=a[0]||me.Bs.floating.adjust;
-        me.Bs.floating.el[i].border=a[1]||me.Bs.floating.border;
-        $(this).attr('ix', i);
-        i++;
+        adjust=a[0]||me.Bs.floating.adjust;
+        border=a[1]||me.Bs.floating.border;
+        $(this).attr('min', min);  $(this).attr('max', max);
+        $(this).attr('adjust', adjust);  $(this).attr('border', border);
       });
+      break;
+    case 'last':
+      $('.Cloning').each(function(){
+        let x=$(this).attr('area');
+        a=$('#'+x).html();
+        $(this).html(a);
+      });
+      break;
     }
 
     $('.Floating').each(function(){
-      let i, r, w, h, lp=50, tp=70, l, t;
-      i=$(this).attr('ix')-0;
-      if(me.Bs.wwi>me.Bs.floating.el[i].limit){
-        r=me.Bs.floating.el[i].max*me.Bs.wwi/(me.Bs.maxPc*100);
-      }else{
-        r=me.Bs.floating.el[i].min/100;
+      let r, w, h, l, t, min, max, adjust, border, m,n;
+      r=(me.Bs.maxPc-me.Bs.wwi)/(me.Bs.maxPc-me.Bs.widthMobile);
+      h=$(this).height();
+      min=$(this).attr('min')-0;
+      max=$(this).attr('max')-0;
+      adjust=$(this).attr('adjust')||'right';
+      border=$(this).attr('border')-0;
+      w=Math.floor(min+((max-min)*(1-r)));
+      m=me.cut($(this).css('margin-top'))+me.cut($(this).css('margin-bottom'));
+      m+=me.cut($(this).css('padding-top'))+me.cut($(this).css('padding-bottom'));
+      switch(adjust){
+      case 'right':
+        n=me.cut($(this).css('margin-left'))+me.cut($(this).css('margin-right'));
+        n+=me.cut($(this).css('padding-left'))+me.cut($(this).css('padding-right'));
+        if(me.Bs.wwi>border){
+          l=me.Bs.wwi-w-n; t=me.Bs.whi-h-m;
+        }else{
+          l=Math.floor((me.Bs.wwi-w-n)/2); t=me.Bs.whi-h-m;
+        }
+        break;
+      case 'left':
+        n=me.cut($(this).css('margin-left'))+me.cut($(this).css('padding-left'));
+        if(me.Bs.wwi>border){
+          l=me.Bs.wwi-w-n; t=me.Bs.whi-h-m;
+        }else{
+          l=Math.floor((me.Bs.wwi-w-n)/2); t=me.Bs.whi-h-m;
+        }
+        break;
+      default:
+        n=me.cut($(this).css('margin-left'))+me.cut($(this).css('margin-right'));
+        n+=me.cut($(this).css('padding-left'))+me.cut($(this).css('padding-right'));
+        l=Math.floor(($(window).width()-w-n)/2); t=me.Bs.whi-h-m;
       }
-      h=$(this).outerHeight();
-      w=Math.floor(me.Bs.wwi*r);
-      if(me.Bs.wwi>me.Bs.floating.el[i].border){
-        l=me.Bs.wwi-w-lp; t=me.Bs.whi-h-tp;
-      }else{
-        w=Math.floor(me.Bs.wwi*r);
-        l=Math.floor((me.Bs.wwi-w)/2); t=me.Bs.whi-h-tp;
-      }
-      $(this).css({width: w+'px', top: t+'px', left: l+'px'});
+      $(this).css({width: w+'px', top: t+'px', left: l+'px', 'z-index': 10});
     });
   }
 };
