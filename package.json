@@ -21,6 +21,5 @@
   },
   "homepage": "http://www.kmrweb.net/server/cms.html",
   "dependencies": {
-    "ke-cms": "file:///home/kimura/github/ke-cms"
   }
 }
