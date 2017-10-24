@@ -1,6 +1,12 @@
-let kxCalendar=class{
-  constructor(Bs) {
-    this.Bs=Bs;
+/**
+ * カレンダー表示モジュール
+ * @module kwCalendar
+ */
+'use strict';
+/* global kwBase */
+let kwCalendar=class kwCalendar extends kwBase{
+  constructor(op, Bs, Save, Sec, Fdata) {
+    super(op, Bs, Save, Sec, Fdata);
   }
   config(op) {
     let me=this;
@@ -223,4 +229,4 @@ let kxCalendar=class{
     );
   }
 };
-console.log(typeof(kxCalendar));
+console.log(typeof(kwCalendar));

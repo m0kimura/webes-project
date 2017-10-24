@@ -9,7 +9,7 @@ let kwMap=class kwMap extends kwBase {
    * @param  {object} Sec   セクション管理データ
    * @param  {object} Fdata フリック制御データ
    * @return {void}         none
-   * @method
+   * @constructor kwMap
    */
   constructor(op, Bs, Save, Sec, Fdata) {
     super(op, Bs, Save, Sec, Fdata);
@@ -17,7 +17,7 @@ let kwMap=class kwMap extends kwBase {
   /**
    * 共通変数設定
    * @param  {object} op 実行時オプション
-   * @method
+   * @method setConfig
    */
   setConfig(op) {
     let me=this;
@@ -32,7 +32,7 @@ let kwMap=class kwMap extends kwBase {
   /**
    * イメージ、枠、設定後初期処理
    * @return {void} none
-   * @method
+   * @method onInit
    */
   onInit() { // molding
     let me=this;
@@ -63,7 +63,7 @@ let kwMap=class kwMap extends kwBase {
   /**
    * ウィンドウリサイズ時処理
    * @return {void} none
-   * @method
+   * @method onResize
    */
   onResize() {
     let me=this, w, h, obj;
@@ -83,8 +83,8 @@ let kwMap=class kwMap extends kwBase {
   }
   /**
    * 画面スクロール時処理
-   * @return {[void} none
-   * @method
+   * @return {void} none
+   * @method onScroll
    */
   onScroll() {
     var me=this, tp, ra;
@@ -103,7 +103,7 @@ let kwMap=class kwMap extends kwBase {
    * @param  {object} obj jquery表示枠
    * @param  {integer} ix 管理番号
    * @return {void}       none
-   * @method
+   * @method blockMap
    */
   blockMap(obj, ix) {
     let me=this, ti, w, h, o;
@@ -134,7 +134,7 @@ let kwMap=class kwMap extends kwBase {
   /**
    * ロード時処理（設置またはイベント監視）
    * @return {void} none
-   * @method
+   * @method onload
    */
   onload() {
     let me=this, ix, obj;
@@ -151,7 +151,7 @@ let kwMap=class kwMap extends kwBase {
    * @param  {object}  obj 監視対象オブジェクト
    * @param  {integer} ix  管理番号
    * @return {bool}        通常反応の禁止
-   * @method
+   * @method monitoring
    */
   monitoring(obj, ix) {
     let me=this;
@@ -171,7 +171,7 @@ let kwMap=class kwMap extends kwBase {
    * @param  {object} obj 表示対象jQueryエリア
    * @param  {integer} ix 管理番号
    * @return {void}       none
-   * @method
+   * @method popup
    */
   popup(obj, ix) {
     let me=this;
@@ -208,7 +208,7 @@ let kwMap=class kwMap extends kwBase {
    * @param  {object} obj  表示エリアjquerｙオブジェクト
    * @param  {integer} ix  管理番号
    * @return {void}        none
-   * @method
+   * @method elevatefunction
    */
   elevatefunction(obj, ix){
     let me=this;
@@ -239,7 +239,7 @@ let kwMap=class kwMap extends kwBase {
   /**
    * 地図の消失
    * @param  {integer} ix 管理番号
-   * @method
+   * @method dimout
    */
   dimout(ix) {
     let me=this;
@@ -258,7 +258,7 @@ let kwMap=class kwMap extends kwBase {
   }
   /**
    * 地図の消失
-   * @method
+   * @method cancel
    */
   cancel() {
     let me=this;

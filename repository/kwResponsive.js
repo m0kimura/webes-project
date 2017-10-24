@@ -9,7 +9,7 @@ let kwResponsive=class kwResponsive extends kwBase {
    * @param  {object} Sec   セクション管理データ
    * @param  {object} Fdata フリック制御データ
    * @return {void}         none
-   * @method
+   * @constructor
    */
   constructor() {
     super(arguments);
@@ -17,7 +17,7 @@ let kwResponsive=class kwResponsive extends kwBase {
   /**
    * 共通変数設定
    * @param  {object} op 実行時オプション
-   * @method
+   * @method setConfig
    */
   setConfig(op) {
     let me=this;
@@ -54,7 +54,7 @@ let kwResponsive=class kwResponsive extends kwBase {
   /**
    * コンテンツエリア（＃Content)の幅をダイレクトに設定
    * @return {object} {main:幅,sub:幅}
-   * @method
+   * @method spanning
    */
   spanning() {
     let me=this, wi, wm, ws;
@@ -82,7 +82,7 @@ let kwResponsive=class kwResponsive extends kwBase {
   /**
    * コンテンツのゾーンを制御します。
    * @return {void} none
-   * @method
+   * @method zone
    */
   zone() {
     let me=this, wm, ws, wi, ml, oh, num, wk, l, h, i, t, a;
@@ -190,7 +190,7 @@ let kwResponsive=class kwResponsive extends kwBase {
   /**
    * ボディの位置調整(直下のタグをpos属性により絶対位置で制御)
    * @return {void} none
-   * @method
+   * @method body
    */
   body(mode) {
     let me=this, hi, wi, lf=0, v, top, fixed, tag, main, area=true;
@@ -315,7 +315,7 @@ let kwResponsive=class kwResponsive extends kwBase {
   /**
    * parallax,remain対応のスクロール
    * @return {integer} スクロールトップ位置
-   * @method
+   * @method scroll
    */
   scroll() {
     let me=this, p=$(window).scrollTop();
@@ -351,7 +351,7 @@ let kwResponsive=class kwResponsive extends kwBase {
    * @param  {string} mode タイミングinit/cont
    * @param  {integer} pos 位置
    * @return {void}        none
-   * @method
+   * @method footer
    */
   footer(mode, pos) {
     let me=this, h, l, d, w={};
@@ -435,8 +435,7 @@ let kwResponsive=class kwResponsive extends kwBase {
   }
   /**
    * クラスに応じて画像幅を調整します。
-   * @return {[type]} [description]
-   * @method
+   * @method image
    */
   image() {
     let me=this; var w, h, e, p, m, t, l, x, y;
@@ -537,7 +536,7 @@ let kwResponsive=class kwResponsive extends kwBase {
   /**
    * せり上がりコンテンツ処理
    * @return {void} none
-   * @method
+   * @method elcontents
    */
   elcontents() {
     let me=this, i, h, a, c, d;
@@ -556,7 +555,7 @@ let kwResponsive=class kwResponsive extends kwBase {
    * 別ウィンドウポップアップ/せり上げ
    * @param  {string} mode タイミングinit/cont
    * @return {bool}        false
-   * @method
+   * @method another
    */
   another(mode) {
     var me=this;
@@ -586,7 +585,7 @@ let kwResponsive=class kwResponsive extends kwBase {
    * @param  {string} html      せり上がりゾーン内容HTML
    * @param  {integer} animate  せり上がりアニメーション時間
    * @return {void}             none
-   * @method
+   * @method elevate
    */
   elevate(html, animate) {
     let me=this, t, l, w; animate=animate||me.Bs.animate;

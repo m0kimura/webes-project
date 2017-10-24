@@ -9,7 +9,7 @@ let kwParts=class kwParts extends kwBase {
    * @param  {object} Sec   セクション管理データ
    * @param  {object} Fdata フリック制御データ
    * @return {void}         none
-   * @method
+   * @constructor
    */
   constructor(op, Bs, Sec, Save, Fdata) {
     super(op, Bs, Sec, Save, Fdata);
@@ -17,7 +17,7 @@ let kwParts=class kwParts extends kwBase {
   /**
    * 共通変数設定
    * @param  {object} op 実行時オプション
-   * @method
+   * @method setConfig
    */
   setConfig(op) {
     let me=this;
@@ -50,7 +50,7 @@ let kwParts=class kwParts extends kwBase {
   /**
    * イメージ設定、フレーム枠組み前の処理
    * @return {void} none
-   * @method
+   * @method onFirst
    */
   onFirst() {
     this.ajaxSource(); this.listing();
@@ -58,7 +58,7 @@ let kwParts=class kwParts extends kwBase {
   /**
    * イメージ、枠、設定後初期処理
    * @return {void} none
-   * @method
+   * @method onInit
    */
   onInit() {
     this.sns(); this.depend(); this.hide(); this.cell();
@@ -66,7 +66,7 @@ let kwParts=class kwParts extends kwBase {
   }
   /**
    * 表示設定終了後最終段階処理
-   * @method
+   * @method onLast
    */
   onLast() {
     this.photoUp(); this.tipup(); this.rollover();
@@ -74,7 +74,7 @@ let kwParts=class kwParts extends kwBase {
   /**
    * ウィンドウリサイズ時処理
    * @return {void} none
-   * @method
+   * @method onResize
    */
   onResize() {
     this.depend(); this.hide(); this.cell(); this.listing();
@@ -83,16 +83,15 @@ let kwParts=class kwParts extends kwBase {
   }
   /**
    * 画面スクロール時処理
-   * @return {[void} none
-   * @method
+   * @return {void} none
+   * @method onScroll
    */
   onScroll(pos) {
     this.logo('cont', pos);
   }
   /**
    * class=Depend対応（src属性をパソコンとモバイルで切り分ける）
-   * @return {[type]} [description]
-   * @method
+   * @method depend
    */
   depend() {
     var me=this; if(me.Bs.mode==me.Save.mode){return;}
@@ -104,8 +103,7 @@ let kwParts=class kwParts extends kwBase {
   }
   /**
    * class=Pc/Mobile対応（Pc/Mobileの時だけ表示）
-   * @return {[type]} [description]
-   * @method
+   * @method hide
    */
   hide() {
     let me=this; if(me.Bs.mode==me.Save.mode){return;}
@@ -124,8 +122,7 @@ let kwParts=class kwParts extends kwBase {
   /**
    * ロゴ表示オペレーション
    * @param  {string} mode 処理タイミング init/cont
-   * @param  {[type]} pos  [description]
-   * @method
+   * @method logo
    */
   logo(mode, pos) {
     var me=this; var tp, lf, wi;
@@ -187,7 +184,7 @@ let kwParts=class kwParts extends kwBase {
   }
   /**
    * セルの大きさを合わせる
-   * @method
+   * @method cell
    */
   cell() {
     let me=this, w, m, n, h, max, min, s, i, l, r, p;
@@ -247,7 +244,7 @@ let kwParts=class kwParts extends kwBase {
   /**
    * ロールオーバ処理
    * @return {void} none
-   * @method
+   * @method rollover
    */
   rollover() {
     let me=this, op=me.Bs.rollover||{}; op.over=op.over||'_r';
@@ -262,7 +259,7 @@ let kwParts=class kwParts extends kwBase {
   /**
    * class=Load対応ソースをダイナミックに展開
    * @return {void} none
-   * @method
+   * @method ajaxSource
    */
   ajaxSource() {
     let m, e;
@@ -274,7 +271,7 @@ let kwParts=class kwParts extends kwBase {
   /**
    * 画像を拡大してポップアップ
    * @return {void} none
-   * @method
+   * @method photoUp
    */
   photoUp() {
     let me=this, x, wn, hn, px, py, r, rh, rw, f;
@@ -316,7 +313,7 @@ let kwParts=class kwParts extends kwBase {
   /**
    * ALT属性のホーバーでのポップアップ
    * @return {void} none
-   * @method
+   * @method tipup
    */
   tipup() {
     let me=this, x, y, z, t, w;
@@ -348,7 +345,7 @@ let kwParts=class kwParts extends kwBase {
   }
   /**
    * GoogleAnalytics 処理
-   * @method
+   * @method analytics
    */
   analytics() {
     var me=this; var a;
@@ -376,7 +373,7 @@ let kwParts=class kwParts extends kwBase {
   }
   /**
    * twitterサブウィンドウ
-   * @method
+   * @method twitter
    */
   twitter() {
     window.twttr=(function(d, s, id){
@@ -389,7 +386,7 @@ let kwParts=class kwParts extends kwBase {
   }
   /**
    * facebooサブウィンドウ
-   * @method
+   * @method facebook
    */
   facebook() {
     window.facebk=(function(d, s, id){
@@ -402,7 +399,7 @@ let kwParts=class kwParts extends kwBase {
   }
   /**
    * SNS関連処理
-   * @method
+   * @method sns
    */
   sns() {
     let me=this;
@@ -447,7 +444,7 @@ let kwParts=class kwParts extends kwBase {
   /**
    * DL領域の開閉
    * @return {Void} none
-   * @method
+   * @method swing
    */
   swing(mode) {
     let me=this;

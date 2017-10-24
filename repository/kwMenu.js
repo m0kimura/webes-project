@@ -1,3 +1,4 @@
+'use strict';
 /* global kwBase */
 let kwMenu=class kwMenu extends kwBase {
   /**
@@ -8,7 +9,7 @@ let kwMenu=class kwMenu extends kwBase {
    * @param  {object} Sec   セクション管理データ
    * @param  {object} Fdata フリック制御データ
    * @return {void}         none
-   * @method
+   * @constructor kwMenu
    */
   constructor(op, Bs, Save, Sec, Fdata) {
     super(op, Bs, Save, Sec, Fdata);
@@ -16,7 +17,7 @@ let kwMenu=class kwMenu extends kwBase {
   /**
    * 共通変数設定
    * @param  {object} op 実行時オプション
-   * @method
+   * @method setConfig
    */
   setConfig(op) {
     let me=this;
@@ -37,7 +38,7 @@ let kwMenu=class kwMenu extends kwBase {
   /**
    * イメージ、枠、設定後初期処理
    * @return {void} none
-   * @method
+   * @method onInit
    */
   onInit() {
     this.section('init');
@@ -48,15 +49,15 @@ let kwMenu=class kwMenu extends kwBase {
   /**
    * ウィンドウリサイズ時処理
    * @return {void} none
-   * @method
+   * @method onResize
    */
   onResize() {
     this.section('padding'); this.folding(); this.slidein('out');
   }
   /**
    * 画面スクロール時処理
-   * @return {[void} none
-   * @method
+   * @return {void} none
+   * @method onScroll
    */
   onScroll(pos) {
     this.section('indicator', pos);
@@ -65,7 +66,7 @@ let kwMenu=class kwMenu extends kwBase {
   }
   /**
    * 表示設定終了後最終段階処理
-   * @method
+   * @method onLast
    */
   onLast() {
     this.section('position'); this.section('monitor');
@@ -76,7 +77,7 @@ let kwMenu=class kwMenu extends kwBase {
    * 右サイドからのメニュースライドイン
    * @param  {string} mode 処理タイミング init/out
    * @return {void}        none
-   * @method
+   * @method slidein
    */
   slidein(mode) {
     let me=this, l, m, d, t, w, h; if(!me.Bs.slidein.use){return;}
@@ -136,7 +137,7 @@ let kwMenu=class kwMenu extends kwBase {
    * @param  {string} mode タイミングinit/cont
    * @param  {integer} pos 位置
    * @return {void}        none
-   * @method
+   * @method locateSide
    */
   locateSide(mode, pos) {
     let me=this, k, p, h, s, y;
@@ -159,7 +160,7 @@ let kwMenu=class kwMenu extends kwBase {
   }
   /**
    * ドロップダウンメニュー
-   * @method
+   * @method dropdown
    */
   dropdown() {
     let me=this, op=me.Bs.dropdown, vi, o, s;
@@ -183,7 +184,7 @@ let kwMenu=class kwMenu extends kwBase {
   /**
    * アコーディオンメニュー
    * @param  {string} mode 処理タイミング init/cont
-   * @method
+   * @method accordion
    */
   accordion(mode){
     let me=this;
@@ -241,7 +242,7 @@ let kwMenu=class kwMenu extends kwBase {
   /**
    * 折りたたみメニュー
    * @param  {string} mode 処理タイミング init/cont
-   * @method
+   * @method folding
    */
   folding(mode) {
     let me=this, f, g, op, cl, no, o;
@@ -314,7 +315,7 @@ let kwMenu=class kwMenu extends kwBase {
    * @param  {string} mode   処理モード init/position/goto/indicator
    * @param  {integer} pos   ページ縦位置
    * @param  {bool} direct   移動時アニメーションなし
-   * @method
+   * @method section
    */
   section(mode, pos, direct) {
     let me=this, id, p, t, out, k, s, i, j, f, y, nx, pr, obj;

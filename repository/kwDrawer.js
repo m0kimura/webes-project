@@ -9,7 +9,7 @@ let kwDrawer=class kwDrawer extends kwBase {
    * @param  {object} Sec   セクション管理情報
    * @param  {object} Fdata フリック制御変数
    * @return {void}         none
-   * @method
+   * @constructor kwDrawer
    */
   constructor(op, Bs, Save, Sec, Fdata) {
     super(op, Bs, Save, Sec, Fdata);
@@ -17,7 +17,7 @@ let kwDrawer=class kwDrawer extends kwBase {
   /**
    * 共通変数の設定
    * @param  {object} op オプション
-   * @method
+   * @method setConfig
    */
   setConfig(op) {
     let me=this;
@@ -33,12 +33,17 @@ let kwDrawer=class kwDrawer extends kwBase {
   /**
    * イメージ設定、フレーム枠組み前の処理
    * @return {void} none
-   * @method
+   * @method onInit
    */
   onInit() {
     let me=this;
     me.layout('mold'); this.floating('init');
   }
+  /**
+   * セッション最終処理
+   * @return {void} none
+   * @method onLast
+   */
   onLast() {
     let me=this;
     this.floating('last'); me.layout('sizing');
@@ -46,7 +51,7 @@ let kwDrawer=class kwDrawer extends kwBase {
   /**
    * ウィンドリサイズ時の処理
    * @return {void} none
-   * @method
+   * @method onResize
    */
   onResize() {
     let me=this;
@@ -55,7 +60,7 @@ let kwDrawer=class kwDrawer extends kwBase {
   /**
    * 画面スクロール時の処理
    * @return {void} none
-   * @method
+   * @method onScroll
    */
   onScroll() {
     this.floating('cont');
@@ -63,7 +68,7 @@ let kwDrawer=class kwDrawer extends kwBase {
   /**
    * フルページ写真のタグ生成
    * @return {Void} none
-   * @method
+   * @method layout
    */
   layout(mode) {
     let me=this;
@@ -145,7 +150,7 @@ let kwDrawer=class kwDrawer extends kwBase {
    * Floatingクラス全画面フォトでのキャプションをフローティング
    * @param  {String} mode 処理タイミング init/cont
    * @return {Void}        none
-   * @method
+   * @method floating
    */
   floating(mode) {
     let me=this, a, x, max, min, adjust, border;

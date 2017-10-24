@@ -4,7 +4,7 @@ let kwBase=class kwBase{
    * コンストラクター
    * @param  {object} obj オプション
    * @return {void}       none
-   * @constructor
+   * @constructor kwBase
    */
   constructor(obj) {
     let op;
@@ -38,7 +38,7 @@ let kwBase=class kwBase{
    * オープン時実行処理
    * @param  {object} obj 実行時オプション、サブオブジェクト群
    * @return {void}       none
-   * @method
+   * @method begin
    */
   begin (obj){
     let me=this, i;
@@ -75,7 +75,7 @@ let kwBase=class kwBase{
    * configをサーバーから取得する
    * @param  {object} op configオプション
    * @return {object}    サーバーからのデータ追加後オプション
-   * @method
+   * @method loadConfig
    */
   loadConfig (op){
     let m, i, out; op=op||{}; if(!op.loadConfig){return;}
@@ -89,7 +89,7 @@ let kwBase=class kwBase{
   /**
    * 毎回実行される共通的な変数設定
    * @return {void} none
-   * @method
+   * @method config
    */
   config() {
     let me=this;
@@ -115,7 +115,7 @@ let kwBase=class kwBase{
    * @param  {string}   mode 処理モード init/set/paste/clear/reset
    * @param  {Function} fn   終了時処理を設定
    * @return {void}          none
-   * @method
+   * @method modal
    */
   modal(mode, fn) {
     let me=this, t, l;
@@ -169,7 +169,7 @@ let kwBase=class kwBase{
   /**
    * コンテンツエリア（＃Content)の幅をダイレクトに設定
    * @return {object} {main:幅,sub:幅}
-   * @method
+   * @method flick
    */
   flick(data, indicator, direct) {
     let me=this;
@@ -285,7 +285,7 @@ let kwBase=class kwBase{
    * @param  {Jquery} selector ｊQueryセレクター
    * @param  {object} para     拡張cssパラメタと値
    * @return {void}            none
-   * @method
+   * @method css
    */
   css(selector, para) {
     if(!selector){return false;}
@@ -344,7 +344,7 @@ let kwBase=class kwBase{
    * @param  {string} cmd コマンド fullHeight, fullWidth
    * @param  {object} obj jQueryオブジェクト
    * @return {integer}    計算値
-   * @method
+   * @method get
    */
   get(cmd, obj) {
     switch(cmd){
@@ -358,7 +358,7 @@ let kwBase=class kwBase{
    * cssのピクセル値から文字を省き数値化する
    * @param  {string} x ピクセル文字列
    * @return {integer}  計算値
-   * @method
+   * @method cut
    */
   cut(x) {
     var p=x.search(/px/); if(p>-1){return x.substring(0, p)-0;}else{return x-0;}
@@ -368,7 +368,7 @@ let kwBase=class kwBase{
    * @param  {string} txt  対象文字列
    * @param  {string} over 挿入文字列
    * @return {string}      編集結果
-   * @method
+   * @method insert
    */
   insert(txt, over) {
     var sw, out, x, i; sw=0; out=''; if(!txt){return '';}
@@ -381,7 +381,7 @@ let kwBase=class kwBase{
   /**
    * 使用する画像を定義
    * @return {void} none
-   * @method
+   * @method defineImage
    */
   defineImage() {
     this.pngclose='data:image/png;base64,'+ // close

@@ -1,6 +1,16 @@
 'use strict';
 /* global kwBase */
 let kwCarousel=class kwCarousel extends kwBase {
+  /**
+   * オブジェクトコンストラクション
+   * @param  {object} op    実行オプション
+   * @param  {object} Bs    基本共通パラメタ
+   * @param  {object} Save  共通保存値
+   * @param  {object} Sec   セクション管理データ
+   * @param  {object} Fdata フリック制御データ
+   * @return {void}         none
+   * @constructor
+   */
   constructor(op, Bs, Save, Sec, Fdata) {
     super(op, Bs, Save, Sec, Fdata);
   }
@@ -8,7 +18,7 @@ let kwCarousel=class kwCarousel extends kwBase {
    * 初期動作設定
    * @param  {object} op 動作オプション
    * @return {void}     none
-   * @method
+   * @method setConfig
    */
   setConfig(op) {
     let me=this;
@@ -132,7 +142,7 @@ let kwCarousel=class kwCarousel extends kwBase {
    * @param  {[type]} pm  [description]
    * @param  {[type]} obj [description]
    * @return {object}     編集後サイズ
-   * @method
+   * @method setSize
    */
   setSize(pm, obj) {
     let me=this, w, n, a;
@@ -165,7 +175,7 @@ let kwCarousel=class kwCarousel extends kwBase {
    * @param  {object} op   処理オプション
    * @param  {string} mode 実行モード init/cont
    * @return {[type]}      [description]
-   * @method
+   * @method indicator
    */
   indicator(op, mode) {
     let me=this, l=op.max, p=op.ix, mk='', i, j;
