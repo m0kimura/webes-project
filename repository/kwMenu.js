@@ -346,7 +346,7 @@ let kwMenu=class kwMenu extends kwBase {
             if(!me.Sec[id]){me.Sec[id]={};}
             me.Sec[id].title=t; me.Sec[id].index=i;
           }else{
-            console.log('<h2>tag not found');
+            console.log('<h2>tag not found for section label');
             if(!me.Sec[id]){me.Sec[id]={};} me.Sec[id].title='Not Found';
           }
           i++;

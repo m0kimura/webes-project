@@ -114,7 +114,6 @@ let kwDrawer=class kwDrawer extends kwBase {
           wk.h=Math.floor(wk.oh*wk.w/wk.ow);
           wk.l=Math.floor(wk.pw/2-wk.w/2+wk.x*(1-wk.r));
           wk.t=Math.floor(wk.ph/2-wk.h/2+wk.y*(1-wk.r));
-          console.log('#117', wk.r);
           break;
         default:
           wk.min=$(this).attr('min');
@@ -132,7 +131,6 @@ let kwDrawer=class kwDrawer extends kwBase {
           wk.l=Math.floor(wk.pw/2-wk.w/2)-wk.ex;
           wk.t=Math.floor(wk.ph/2-wk.h/2)-wk.ey;
         }
-        //console.log('#93', wk);
         $(this).css({
           width: wk.w+'px', top: wk.t+'px', left: wk.l+'px',
           position: 'absolute', 'z-index': -1
@@ -157,8 +155,7 @@ let kwDrawer=class kwDrawer extends kwBase {
       $('.Floating').each(function(){
         $(this).css({position: 'absolute', top: 0, left: 0, height: 'auto'});
         x=$(this).attr('range'); if(x){a=x.split(':');}else{a=[];}
-        max=a[1]-0; console.log('#161', a[0]);
-        min=a[0]-0; console.log('#162', min);
+        max=a[1]-0; min=a[0]-0;
         x=$(this).attr('positioning'); if(x){a=x.split(':')-0;}else{a=[];}
         adjust=a[0]||me.Bs.floating.adjust;
         border=a[1]||me.Bs.floating.border;
