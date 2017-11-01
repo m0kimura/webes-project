@@ -224,7 +224,7 @@ let kwResponsive=class kwResponsive extends kwBase {
     //
     me.Bs.shrinkHeight=0; me.Save['fixedTop']=0; top=0; fixed=0;
     $('body').children().each(function(){
-      let h, r, m, z=1, o='visible', s, w, ow, oh;
+      let h, r, m, o='visible', s, w, ow, oh;
       tag=$(this)[0].localName;
       me.Save.pos[tag]=top;
       $(this).css({height: 'auto'});
@@ -303,7 +303,7 @@ let kwResponsive=class kwResponsive extends kwBase {
         if(tag=='main'){hi=main;}
         if(area && tag!='a'){
           me.css($(this), {
-            'z-index': z, position: 'absolute', top: top+'px', left: lf+'px',
+            position: 'absolute', top: top+'px', left: lf+'px',
             width: wi+'px', outerHeight: hi+'px', overflow: o
           });
           $(this).attr('save', top); $(this).attr('hi', hi);
@@ -415,10 +415,10 @@ let kwResponsive=class kwResponsive extends kwBase {
         d=$('footer').attr('save')-me.Bs.footer.remain;
         $('footer').css({
           position: 'absolute', top: d+'px', width: me.Bs.wwi+'px',
-          height: 'auto', 'margin-left': 0
+          height: 'auto', 'margin-left': 0, 'z-index': 700
         });
       }else{
-        $('footer').css({position: 'fixed', top: w.usual+'px', 'margin-left': 0});
+        $('footer').css({position: 'fixed', top: w.usual+'px', 'margin-left': 0, 'z-index': 700});
       }
     };
     if(me.Bs.mode=='mobile'){
