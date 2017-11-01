@@ -195,6 +195,7 @@ let kwResponsive=class kwResponsive extends kwBase {
   body(mode) {
     let me=this, hi, wi, lf=0, v, top, fixed, tag, main, area=true;
     if(mode=='init'){
+      $('html,body').css({hight: 'auto'});
       $('body').children().each(function(){
         if($(this).attr('pane')){
           let h, w;

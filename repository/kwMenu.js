@@ -411,7 +411,7 @@ let kwMenu=class kwMenu extends kwBase {
           let y;
           if(pos=='#Top'){y=0;}else{y=$(pos).position().top+$('main').position().top-me.Save.fixedTop;}
           if(direct){$(tag).scrollTop(y);}
-          else{$('body').animate({'scrollTop': y}, me.Bs.scroll.animate, 'swing');}
+          else{$('body,html').animate({'scrollTop': y}, me.Bs.scroll.animate, 'swing');}
         }
       }
       return false;

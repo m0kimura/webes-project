@@ -210,6 +210,7 @@ let kwBase=class kwBase{
         data.flg=true;
         data.wi=data.object.outerWidth();
         data.hi=data.object.outerHeight();
+        //if(isTouch){if(!event.changedTouches){isTouch=false;}}
         data.stx=(isTouch ? event.changedTouches[0].pageX : e.pageX);
         data.sty=(isTouch ? event.changedTouches[0].pageY : e.pageY);
         data.inx=parseInt($(data.object).css('margin-left'));
