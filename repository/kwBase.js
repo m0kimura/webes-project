@@ -156,6 +156,7 @@ let kwBase=class kwBase{
       me.Save.proc=fn;
       break;
     case 'clear':
+      me.Save.proc();
       $('#Modal').css({display: 'none'}); $('#Mclose').css({display: 'none'});
       me.Save.proc=function(){};
       break;
