@@ -1,6 +1,6 @@
 {
   "name": "webes-project",
-  "version": "1.0.0",
+  "version": "1.5.0",
   "description": "CMS Web Server on EScript Version",
   "main": "nodejs/server.js",
   "scripts": {
@@ -21,6 +21,6 @@
   },
   "homepage": "http://www.kmrweb.net/server/cms.html",
   "dependencies": {
-    "ke-cms": "^1.3.4"
+    "ke-cms": "^1.4.1"
   }
 }
