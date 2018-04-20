@@ -44,6 +44,7 @@ let kwCalendar=class kwCalendar extends kwBase{
     here.append('<div id="prame" style="z-index: 1"></div>');
 
     me.frame(me.Bs.calendar); me.block(me.Bs.calendar);
+    console.log(op);
     //op.height=500; op.consix=1;
     //$('#frame').css({display: 'none'}); me.prame(me.Bs.calendar); me.plock(me.Bs.calendar);
   }
