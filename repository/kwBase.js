@@ -51,6 +51,7 @@ let kwBase=class kwBase{
       me.spanning(); me.image('init'); me.zone();
       for(i in me.Objs){me.Objs[i].onInit();}
       me.body('init'); me.footer('init', 0);
+      $('body').css('opacity', 1.0);
 
       $(window).on('resize', function(){
         me.config();
